@@ -1,6 +1,6 @@
 import { ArrowButton } from 'components/arrow-button';
 import { Button } from 'components/button';
-import { useState, useRef, SyntheticEvent } from 'react';
+import { useState, useRef } from 'react';
 import { useOutsideClickClose } from '../select/hooks/useOutsideClickClose';
 import { Text } from '../text';
 import { Select } from '../select';
@@ -13,6 +13,7 @@ import {fontFamilyOptions,
 	fontSizeOptions,
 	defaultArticleState,
 	ArticleStateType,
+	OptionType,
 } from 'src/constants/articleProps'
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
@@ -39,7 +40,7 @@ export const ArticleParamsForm = ({setPageState}: setPage) => {
 		onChange: setIsPanelOpen
 	});
 
-	const submitForm = (e: SyntheticEvent) => {
+	const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setPageState(options)
 		setIsPanelOpen(!isPanelOpen)
@@ -51,6 +52,12 @@ export const ArticleParamsForm = ({setPageState}: setPage) => {
 		setIsPanelOpen(!isPanelOpen)
 	};
 
+	const handleChange = (optionName: string) => {
+		return function (value: OptionType) {
+			return setOptions({...options, [optionName]: value})
+		}
+	};
+
 	return (
 		<>
 			<div ref={rootRef}>
@@ -59,33 +66,18 @@ export const ArticleParamsForm = ({setPageState}: setPage) => {
 					<form className={styles.form} onSubmit={submitForm}>
 					<Text size={31} weight={800} uppercase={true}>Задайте параметры</Text>
 					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
-            		<Select title='Шрифт' options={fontFamilyOptions} selected={options.fontFamilyOption} onChange={(selected) => setOptions((prevState) => ({
-                        ...prevState,
-              			fontFamilyOption: selected
-            			}))}/>
+            		<Select title='Шрифт' options={fontFamilyOptions} selected={options.fontFamilyOption} onChange={handleChange('fontFamilyOption')}/>
           			</div>
-					<RadioGroup name='fontSize' title='Размер шрифта' options={fontSizeOptions} selected={options.fontSizeOption} onChange={(value) => setOptions((prevState) => ({
-						...prevState,
-						fontSizeOption: value
-					}))}/>
+					<RadioGroup name='fontSize' title='Размер шрифта' options={fontSizeOptions} selected={options.fontSizeOption} onChange={handleChange('fontSizeOption')}/>
 					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
-					<Select title='Цвет шрифта' options={fontColors} selected={options.fontColor} onChange={(selected) => setOptions((prevState) => ({
-						...prevState,
-						fontColor: selected
-					}))}/>
+					<Select title='Цвет шрифта' options={fontColors} selected={options.fontColor} onChange={handleChange('fontColor')}/>
 					</div>
 					<Separator />
 					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
-					<Select title='Цвет фона' options={backgroundColors} selected={options.backgroundColor} onChange={(selected) => setOptions((prevState) => ({
-						...prevState,
-						backgroundColor: selected
-					}))}/>
+					<Select title='Цвет фона' options={backgroundColors} selected={options.backgroundColor} onChange={handleChange('backgroundColor')}/>
 					</div>
 					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
-					<Select title='Ширина контента' options={contentWidthArr} selected={options.contentWidth} onChange={(selected) => setOptions((prevState) => ({
-						...prevState,
-						contentWidth: selected
-					}))}/>
+					<Select title='Ширина контента' options={contentWidthArr} selected={options.contentWidth} onChange={handleChange('contentWidth')}/>
 					</div>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' onClick={applyDefaultOptions}/>
