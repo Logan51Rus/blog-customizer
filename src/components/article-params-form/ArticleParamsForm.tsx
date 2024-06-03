@@ -20,7 +20,7 @@ import styles from './ArticleParamsForm.module.scss';
 
 interface setPage {
 	setPageState: React.Dispatch<React.SetStateAction<ArticleStateType>>
-}
+};
 
 export const ArticleParamsForm = ({setPageState}: setPage) => {
 
