@@ -27,7 +27,6 @@ export const ArticleParamsForm = ({setPageState}: setPage) => {
 	const [isPanelOpen, setIsPanelOpen] = useState(false);
 	const [options, setOptions] = useState<ArticleStateType>(defaultArticleState);
 	const rootRef = useRef<HTMLDivElement>(null);
-	const selectRef = useRef<HTMLDivElement>(null)
 
 	const togglePanel = () => {
 		setIsPanelOpen(!isPanelOpen);
@@ -65,20 +64,12 @@ export const ArticleParamsForm = ({setPageState}: setPage) => {
 				<aside className={clsx(styles.container, isPanelOpen && styles.container_open)}>
 					<form className={styles.form} onSubmit={submitForm}>
 					<Text size={31} weight={800} uppercase={true}>Задайте параметры</Text>
-					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
             		<Select title='Шрифт' options={fontFamilyOptions} selected={options.fontFamilyOption} onChange={handleChange('fontFamilyOption')}/>
-          			</div>
 					<RadioGroup name='fontSize' title='Размер шрифта' options={fontSizeOptions} selected={options.fontSizeOption} onChange={handleChange('fontSizeOption')}/>
-					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
 					<Select title='Цвет шрифта' options={fontColors} selected={options.fontColor} onChange={handleChange('fontColor')}/>
-					</div>
 					<Separator />
-					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
 					<Select title='Цвет фона' options={backgroundColors} selected={options.backgroundColor} onChange={handleChange('backgroundColor')}/>
-					</div>
-					<div ref={selectRef} onClick={(e) => e.stopPropagation()}>
 					<Select title='Ширина контента' options={contentWidthArr} selected={options.contentWidth} onChange={handleChange('contentWidth')}/>
-					</div>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' onClick={applyDefaultOptions}/>
 						<Button title='Применить' type='submit' />
